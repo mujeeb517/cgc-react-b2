@@ -2,6 +2,9 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Calc from './Calc';
+import Result from './Result';
+import List from './List';
+import ProductList from './product/ProductList';
 
 // function App() {
 
@@ -32,9 +35,7 @@ function App() {
     return <div id="parent" class="flex flex-col flex-grow min-h-screen">
         <Header />
         <main class="flex-grow">
-            <Calc a={10} b={20} />
-            <Calc a={100} b={200} />
-            <Calc a={-100} b={200} />
+            <ProductList />
         </main>
         <Footer />
     </div>
