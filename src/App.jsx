@@ -5,6 +5,8 @@ import Calc from './Calc';
 import Result from './Result';
 import List from './List';
 import ProductList from './product/ProductList';
+import UserList from './user/UserList';
+import Counter from './Counter';
 
 // function App() {
 
@@ -35,7 +37,7 @@ function App() {
     return <div id="parent" class="flex flex-col flex-grow min-h-screen">
         <Header />
         <main class="flex-grow">
-            <ProductList />
+            <UserList />
         </main>
         <Footer />
     </div>
