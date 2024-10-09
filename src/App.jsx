@@ -37,7 +37,7 @@ function App() {
     return <div id="parent" class="flex flex-col flex-grow min-h-screen">
         <Header />
         <main class="flex-grow">
-            <UserList />
+            <ProductList />
         </main>
         <Footer />
     </div>

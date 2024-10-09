@@ -1,20 +1,43 @@
 // Container & Prsentation
 import ProductItem from "./ProductItem";
+import React from "react";
+import axios from "axios";
+import Spinner from "../util/Spinner";
+import Error from '../util/Error';
 
-function ProductList() {
-    const products = [
-        { id: 1, brand: 'Apple', model: 'Iphone 13', price: 600, inStock: false, image: 'https://images.pexels.com/photos/12741170/pexels-photo-12741170.jpeg?auto=compress&cs=tinysrgb&w=800' },
-        { id: 2, brand: 'Apple', model: 'Iphone 14', price: 700, inStock: true, image: 'https://images.pexels.com/photos/21832894/pexels-photo-21832894/free-photo-of-iphone.jpeg?auto=compress&cs=tinysrgb&w=800' },
-        { id: 3, brand: 'Apple', model: 'Iphone 15', price: 800, inStock: true, image: 'https://images.pexels.com/photos/18525574/pexels-photo-18525574/free-photo-of-unboxing-iphone-15-pro-max-box-in-natural-titanium-color-mention-zana_qaradaghy-on-instagram-while-use-this-photo-follow-on-instagram-zana_qaradaghy.jpeg?auto=compress&cs=tinysrgb&w=800' },
-        { id: 4, brand: 'Samsung', model: 'Galaxy S24', price: 700, inStock: false, image: 'https://images.pexels.com/photos/15493878/pexels-photo-15493878/free-photo-of-hands-on-samsung-galaxy-s23-ultra-5g-green-color-mention-zana_qaradaghy-on-instagram-while-use-this-photo-follow-on-instagram-zana_qaradaghy.jpeg?auto=compress&cs=tinysrgb&w=800' }
-    ];
+class ProductList extends React.Component {
 
-    return <div className="m-2">
-        <h1 className="text-2xl font-semibold mb-4">Products</h1>
-        <div className="grid grid-cols-3">
-            {products.map(prd => <ProductItem product={prd} />)}
+    state = {
+        products: [],
+        loading: true,
+        hasErr: false
+    };
+
+    constructor() {
+        super();
+
+        axios.get('https://cgc-api-b2.onrender.com/api/v1/products1')
+            .then(res => {
+                this.setState({
+                    products: res.data.data,
+                    loading: false
+                });
+            })
+            .catch(err => this.setState({ hasErr: true, loading: false }));
+    }
+
+    render() {
+        return <div className="m-4">
+            {this.state.loading && <Spinner />}
+            <h1 className="text-2xl font-semibold mb-4">Products</h1>
+            {this.state.hasErr && <Error />}
+            <div className="grid grid-cols-3">
+                {this.state.products.map(prd => <ProductItem product={prd} />)}
+            </div>
         </div>
-    </div>
+    }
 }
+
+
 
 export default ProductList;
