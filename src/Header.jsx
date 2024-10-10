@@ -15,7 +15,7 @@ function Header() {
             <li class="mr-2"><a href="">Products</a></li>
             <li class="mr-2"><a href="">Contact Us</a></li>
         </ul>
-        <div>
+        <div className="ml-auto">
             <Name name="John" />
         </div>
     </nav>

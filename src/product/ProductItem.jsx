@@ -15,7 +15,9 @@ const ProductItem = ({ product }) => {
             <a href="#">
                 <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">{product.brand} {product.model}</h5>
                 <h5 class="text-sm tracking-tight text-gray-900 line-through">${product.price}</h5>
-                <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900">${getDiscountedPrice()}</h5>
+                <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900">${getDiscountedPrice()}
+                    <span className="ml-1 text-xs font-normal">({product.discount}% off)</span>
+                </h5>
             </a>
             {
                 product.inStock ?
