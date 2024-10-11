@@ -14,6 +14,7 @@ class ProductList extends React.Component {
         hasErr: false,
         sort: '',
         direction: '',
+        search: '',
         page: 1,
         limit: 5
     };
@@ -22,8 +23,8 @@ class ProductList extends React.Component {
         this.setState({
             loading: true
         });
-        const { page, limit, sort, direction } = this.state;
-        const url = `https://cgc-api-b2.onrender.com/api/v1/products/page/${page}/limit/${limit}?sort=${sort}&direction=${direction}`;
+        const { page, limit, sort, direction, search } = this.state;
+        const url = `https://cgc-api-b2.onrender.com/api/v1/products/page/${page}/limit/${limit}?sort=${sort}&direction=${direction}&search=${search}`;
         axios.get(url)
             .then(res => {
                 this.setState({
@@ -84,12 +85,24 @@ class ProductList extends React.Component {
         });
     }
 
+    onSearchChange = (evt) => {
+        if (evt.key === 'Enter') {
+            this.fetchData();
+        } else {
+            this.setState({
+                search: evt.target.value
+            });
+        }
+    };
+
     render() {
         return <div className="m-4">
             {this.state.loading && <Spinner />}
             <div className="flex">
                 <h1 className="text-2xl font-semibold mb-4">Products</h1>
                 <div className="mr-12 ml-auto">
+
+                    <input onKeyDown={this.onSearchChange} className="p-2 mr-2 font-semibold border border-gray-200 rounded" type="text" placeholder="Search" />
 
                     <select onChange={this.onSortChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">
                         <option value="">Sort</option>
