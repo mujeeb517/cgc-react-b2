@@ -8,6 +8,7 @@ import Home from './Home';
 import About from './About';
 import Contact from './Contact';
 import NotFound from './NotFound';
+import ProductDetail from './product/ProductDetail';
 
 // function App() {
 
@@ -44,6 +45,7 @@ function App() {
                     <Route path="/about" Component={About} />
                     <Route path="/contact" Component={Contact} />
                     <Route path="/products" Component={ProductList} />
+                    <Route path="/product-detail/:id" Component={ProductDetail} />
                     <Route path="/users" Component={UserList} />
                     <Route path="*" Component={NotFound} />
                     {/* <Route path="*" Component={Home} /> */}
