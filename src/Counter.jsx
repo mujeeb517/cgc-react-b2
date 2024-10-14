@@ -7,13 +7,36 @@ import React from "react";
     events
 */
 class Counter extends React.Component {
-    state = {
-        count: 0
-    }
 
     constructor(props) {
         super();
-        this.state.count = props.initialValue;
+        this.state = {
+            count: 0
+        }
+        this.state.count = props.initialValue || 0;
+        console.log('constructor');
+    }
+
+    componentDidMount() {
+        console.log('mounted');
+        // perform operations as soon as component loads
+    }
+
+    shouldComponentUpdate(newProps, newState) {
+        console.log('shouldUpdate');
+        if (newState.count <= 10)
+            return true;
+        return false;
+    }
+
+    componentDidUpdate() {
+        console.log('updated');
+        // refresh
+    }
+
+    componentWillUnmount() {
+        console.log('unmounted');
+        // clean up
     }
 
     onInc = () => {

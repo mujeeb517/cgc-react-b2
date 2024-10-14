@@ -1,5 +1,6 @@
 import React from 'react';
 import Name from './Name';
+import { Link } from 'react-router-dom';
 
 function Header() {
     return <nav class="flex bg-orange-500 text-white">
@@ -10,10 +11,11 @@ function Header() {
             Products App
         </h1>
         <ul class="flex m-4">
-            <li class="mr-2"><a href="">Home</a></li>
-            <li class="mr-2"><a href="">About</a></li>
-            <li class="mr-2"><a href="">Products</a></li>
-            <li class="mr-2"><a href="">Contact Us</a></li>
+            <li class="mr-2"><Link to="/">Home</Link></li>
+            <li class="mr-2"><Link to="/about">About</Link></li>
+            <li class="mr-2"><Link to="/products">Products</Link></li>
+            <li class="mr-2"><Link to="/users">Users</Link></li>
+            <li class="mr-2"><Link to="/contact">Contact Us</Link></li>
         </ul>
         <div className="ml-auto">
             <Name name="John" />

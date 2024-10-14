@@ -1,12 +1,13 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import Calc from './Calc';
-import Result from './Result';
-import List from './List';
 import ProductList from './product/ProductList';
 import UserList from './user/UserList';
-import Counter from './Counter';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import About from './About';
+import Contact from './Contact';
+import NotFound from './NotFound';
 
 // function App() {
 
@@ -35,12 +36,22 @@ import Counter from './Counter';
 
 function App() {
     return <div id="parent" class="flex flex-col flex-grow min-h-screen">
-        <Header />
-        <main class="flex-grow">
-            <ProductList />
-        </main>
-        <Footer />
-    </div>
+        <BrowserRouter>
+            <Header />
+            <main class="flex-grow">
+                <Routes>
+                    <Route path="/" Component={Home} />
+                    <Route path="/about" Component={About} />
+                    <Route path="/contact" Component={Contact} />
+                    <Route path="/products" Component={ProductList} />
+                    <Route path="/users" Component={UserList} />
+                    <Route path="*" Component={NotFound} />
+                    {/* <Route path="*" Component={Home} /> */}
+                </Routes>
+            </main>
+            <Footer />
+        </BrowserRouter>
+    </div >
 }
 
 export default App;

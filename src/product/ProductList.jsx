@@ -1,75 +1,49 @@
 // Container & Prsentation
+import React, { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
-import React from "react";
 import axios from "axios";
 import Spinner from "../util/Spinner";
 import Error from '../util/Error';
 
-class ProductList extends React.Component {
+function ProductList() {
 
-    state = {
-        products: [],
-        metadata: {},
-        loading: true,
-        hasErr: false,
-        sort: '',
-        direction: '',
-        search: '',
-        page: 1,
-        limit: 5
-    };
+    const [products, setProducts] = useState([]);
+    const [metadata, setMetadata] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [sort, setSort] = useState('');
+    const [direction, setDirection] = useState('');
+    const [search, setSearch] = useState('');
+    const [hasErr, setErr] = useState(false);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(5);
 
-    fetchData = () => {
-        this.setState({
-            loading: true
-        });
-        const { page, limit, sort, direction, search } = this.state;
+    const fetchData = () => {
+        setLoading(true);
         const url = `https://cgc-api-b2.onrender.com/api/v1/products/page/${page}/limit/${limit}?sort=${sort}&direction=${direction}&search=${search}`;
         axios.get(url)
             .then(res => {
-                this.setState({
-                    products: res.data.data,
-                    metadata: res.data.metadata,
-                    loading: false
-                });
+                setProducts(res.data.data);
+                setMetadata(res.data.metadata);
+                setLoading(false);
             })
-            .catch(err => this.setState({ hasErr: true, loading: false }));
-    }
-
-    constructor() {
-        super();
-        this.fetchData();
-    }
-
-    onNext = () => {
-        this.setState({
-            page: this.state.page + 1
-        }, () => {
-            this.fetchData();
-        });
-
-    }
-
-    onPrev = () => {
-        const current = this.state.page;
-        if (current > 1) {
-            this.setState({
-                page: current - 1
-            }, () => {
-                this.fetchData();
+            .catch(err => {
+                setLoading(false);
+                setErr(true);
             });
-        }
     }
 
-    onPageSizeChange = (evt) => {
-        this.setState({
-            limit: evt.target.value
-        }, () => {
-            this.fetchData();
-        });
-    }
+    // compnentDidMount
+    // componentDidUpdate
+    useEffect(() => fetchData(), [page, limit, sort, direction]);
 
-    onSortChange = (evt) => {
+    const onNext = () => setPage(page + 1);;
+
+    const onPrev = () => setPage(page - 1);
+
+    const onPageSizeChange = (evt) => setLimit(evt.target.value);
+
+
+    const onSortChange = (evt) => {
         const { value } = evt.target; //price:asc
         let sort = '', direction = '';
         if (value) {
@@ -77,77 +51,69 @@ class ProductList extends React.Component {
             sort = tokens[0];
             direction = tokens[1];
         }
-        this.setState({
-            sort: sort,
-            direction: direction
-        }, () => {
-            this.fetchData();
-        });
+        setSort(sort);
+        setDirection(direction);
     }
 
-    onSearchChange = (evt) => {
+    const onSearchChange = (evt) => {
         if (evt.key === 'Enter') {
-            this.fetchData();
+            fetchData();
         } else {
-            this.setState({
-                search: evt.target.value
-            });
+            setSearch(evt.target.value);
         }
     };
 
-    render() {
-        return <div className="m-4">
-            {this.state.loading && <Spinner />}
-            <div className="flex">
-                <h1 className="text-2xl font-semibold mb-4">Products</h1>
-                <div className="mr-12 ml-auto">
+    return <div className="m-4">
+        {loading && <Spinner />}
+        <div className="flex">
+            <h1 className="text-2xl font-semibold mb-4">Products</h1>
+            <div className="mr-12 ml-auto">
 
-                    <input onKeyDown={this.onSearchChange} className="p-2 mr-2 font-semibold border border-gray-200 rounded" type="text" placeholder="Search" />
+                <input onKeyDown={onSearchChange} className="p-2 mr-2 font-semibold border border-gray-200 rounded" type="text" placeholder="Search" />
 
-                    <select onChange={this.onSortChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">
-                        <option value="">Sort</option>
-                        <option value="price:asc">Price Low to High</option>
-                        <option value="price:desc">Price High to Low</option>
-                        <option value="discount:asc">Discount Low to High</option>
-                        <option value="discount:desc">Discount High to Low</option>
-                    </select>
+                <select onChange={onSortChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">
+                    <option value="">Sort</option>
+                    <option value="price:asc">Price Low to High</option>
+                    <option value="price:desc">Price High to Low</option>
+                    <option value="discount:asc">Discount Low to High</option>
+                    <option value="discount:desc">Discount High to Low</option>
+                </select>
 
-                    <select value={this.state.limit} onChange={this.onPageSizeChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">
-                        <option value="">Per Page</option>
-                        <option value="5">Per Page: 5</option>
-                        <option value="10">Per Page: 10</option>
-                        <option value="20">Per Page: 20</option>
-                        <option value="50">Per Page: 50</option>
-                    </select>
-                    <button disabled={this.state.page === 1} className="border border-gray-200 p-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
-                        </svg>
-                    </button>
-                    <button disabled={this.state.page === 1} onClick={this.onPrev} className="border border-gray-200 ml-2 p-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-                        </svg>
-                    </button>
-                    <span className="text-sm m-2">Showing page {this.state.page} of {this.state.metadata.totalPages} (Total:{this.state.metadata.count})</span>
-                    <button disabled={this.state.page === this.state.metadata.totalPages} onClick={this.onNext} className="border border-gray-200 p-1 ml-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
-                    <button className="border border-gray-200 p-1 ml-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            {this.state.hasErr && <Error />}
-            <div className="grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2">
-                {this.state.products.map(prd => <ProductItem product={prd} />)}
+                <select value={limit} onChange={onPageSizeChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">
+                    <option value="">Per Page</option>
+                    <option value="5">Per Page: 5</option>
+                    <option value="10">Per Page: 10</option>
+                    <option value="20">Per Page: 20</option>
+                    <option value="50">Per Page: 50</option>
+                </select>
+                <button disabled={page === 1} className="border border-gray-200 p-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                    </svg>
+                </button>
+                <button disabled={page === 1} onClick={onPrev} className="border border-gray-200 ml-2 p-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <span className="text-sm m-2">Showing page {page} of {metadata.totalPages} (Total:{metadata.count})</span>
+                <button disabled={page === metadata.totalPages} onClick={onNext} className="border border-gray-200 p-1 ml-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+                <button className="border border-gray-200 p-1 ml-1 hover:bg-gray-200 rounded disabled:bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
             </div>
         </div>
-    }
+        {hasErr && <Error />}
+        <div className="grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2">
+            {products.map(prd => <ProductItem product={prd} />)}
+        </div>
+    </div>
 }
 
 
