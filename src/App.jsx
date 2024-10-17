@@ -9,6 +9,8 @@ import About from './About';
 import Contact from './Contact';
 import NotFound from './NotFound';
 import ProductDetail from './product/ProductDetail';
+import NewProduct from './product/NewProduct';
+import Login from './user/Login';
 
 // function App() {
 
@@ -45,8 +47,10 @@ function App() {
                     <Route path="/about" Component={About} />
                     <Route path="/contact" Component={Contact} />
                     <Route path="/products" Component={ProductList} />
+                    <Route path="/products/new" Component={NewProduct} />
                     <Route path="/product-detail/:id" Component={ProductDetail} />
                     <Route path="/users" Component={UserList} />
+                    <Route path="/login" Component={Login} />
                     <Route path="*" Component={NotFound} />
                     {/* <Route path="*" Component={Home} /> */}
                 </Routes>

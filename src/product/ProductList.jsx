@@ -1,9 +1,10 @@
 // Container & Prsentation
 import React, { useEffect, useState } from "react";
 import ProductItem from "./ProductItem";
-import axios from "axios";
+import myAxios from "../util/myAxios";
 import Spinner from "../util/Spinner";
 import Error from '../util/Error';
+import { Link } from "react-router-dom";
 
 function ProductList() {
 
@@ -19,8 +20,8 @@ function ProductList() {
 
     const fetchData = () => {
         setLoading(true);
-        const url = `https://cgc-api-b2.onrender.com/api/v1/products/page/${page}/limit/${limit}?sort=${sort}&direction=${direction}&search=${search}`;
-        axios.get(url)
+        const url = `/api/v1/products/page/${page}/limit/${limit}?sort=${sort}&direction=${direction}&search=${search}`;
+        myAxios().get(url)
             .then(res => {
                 setProducts(res.data.data);
                 setMetadata(res.data.metadata);
@@ -68,7 +69,7 @@ function ProductList() {
         <div className="flex">
             <h1 className="text-2xl font-semibold mb-4">Products</h1>
             <div className="mr-12 ml-auto">
-
+                <Link className="bg-orange-500 px-1 py-2 m-2 rounded text-white" to="/products/new">Add New Product</Link>
                 <input onKeyDown={onSearchChange} className="p-2 mr-2 font-semibold border border-gray-200 rounded" type="text" placeholder="Search" />
 
                 <select onChange={onSortChange} className="p-2 border border-gray-200 rounded mr-2 font-semibold">

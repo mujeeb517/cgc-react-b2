@@ -1,8 +1,17 @@
 import React from 'react';
 import Name from './Name';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Header() {
+
+    const navigate = useNavigate();
+
+    const onLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('name');
+        navigate('/login');
+    };
+
     return <nav class="flex bg-orange-500 text-white">
         <h1 class="flex text-2xl font-semibold m-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mt-1 mr-1">
@@ -17,8 +26,14 @@ function Header() {
             <li class="mr-2"><Link to="/users">Users</Link></li>
             <li class="mr-2"><Link to="/contact">Contact Us</Link></li>
         </ul>
-        <div className="ml-auto">
-            <Name name="John" />
+        <div className="ml-auto flex mr-2">
+            {localStorage.getItem('token') ?
+                <div className="flex">
+                    <Name name={localStorage.getItem('name')} />
+                    <button onClick={onLogout} className="ml-2">Logout</button>
+                </div> :
+                <Link className="mt-4" to="/login">Login</Link>
+            }
         </div>
     </nav>
 }
