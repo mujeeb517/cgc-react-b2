@@ -4,7 +4,7 @@ import ProductItem from "./ProductItem";
 import myAxios from "../util/myAxios";
 import Spinner from "../util/Spinner";
 import Error from '../util/Error';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ProductList() {
 
@@ -17,6 +17,7 @@ function ProductList() {
     const [hasErr, setErr] = useState(false);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
+    const navigate = useNavigate();
 
     const fetchData = () => {
         setLoading(true);
@@ -28,8 +29,12 @@ function ProductList() {
                 setLoading(false);
             })
             .catch(err => {
-                setLoading(false);
-                setErr(true);
+                if (err.response && err.response.status === 401) {
+                    navigate('/login');
+                } else {
+                    setLoading(false);
+                    setErr(true);
+                }
             });
     }
 
