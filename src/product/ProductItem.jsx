@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import NoImg from '../assets/noimg.webp';
 import moment from 'moment';
+import myAxios from '../util/myAxios';
+import { useState } from 'react';
+import Error from '../util/Error';
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ product, onDeleteNotify }) => {
+
+    const [err, setErr] = useState(null);
 
     const getDiscountedPrice = () => {
         const { price, discount } = product;
@@ -10,7 +15,26 @@ const ProductItem = ({ product }) => {
         return price - discountAmt;
     };
 
+    const onDelete = async () => {
+        try {
+            await myAxios().delete(`/api/v1/products/${product._id}`);
+            // TODO: Refresh the products
+            onDeleteNotify(product._id);
+        } catch (err) {
+            setErr(err.response.status);
+            // setError(403)
+            // setError(500)
+        }
+    };
+
     return <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow mb-4">
+        <button onClick={onDelete} className="">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+        {err === 403 ? <Error msg="No Permission to delete" /> : null}
+        {err === 500 ? <Error /> : null}
         <img class="rounded w-full" src={NoImg} alt="" />
         <div class="p-5">
             <Link to={"/product-detail/" + product._id}>

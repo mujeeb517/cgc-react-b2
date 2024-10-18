@@ -33,6 +33,11 @@ function ProductList() {
             });
     }
 
+    const onDeleteNotify = (productId) => {
+        console.log('notification received', productId);
+        fetchData();
+    };
+
     // compnentDidMount
     // componentDidUpdate
     useEffect(() => fetchData(), [page, limit, sort, direction]);
@@ -112,7 +117,7 @@ function ProductList() {
         </div>
         {hasErr && <Error />}
         <div className="grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2">
-            {products.map(prd => <ProductItem product={prd} />)}
+            {products.map(prd => <ProductItem product={prd} onDeleteNotify={onDeleteNotify} />)}
         </div>
     </div>
 }
