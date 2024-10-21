@@ -122,7 +122,7 @@ function ProductList() {
         </div>
         {hasErr && <Error />}
         <div className="grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2">
-            {products.map(prd => <ProductItem product={prd} onDeleteNotify={onDeleteNotify} />)}
+            {products.map(prd => <ProductItem key={prd._id} product={prd} onDeleteNotify={onDeleteNotify} />)}
         </div>
     </div>
 }

@@ -38,10 +38,10 @@ import Login from './user/Login';
 //    * Returns either null or html elements
 
 function App() {
-    return <div id="parent" class="flex flex-col flex-grow min-h-screen">
+    return <div id="parent" className="flex flex-col flex-grow min-h-screen">
         <BrowserRouter>
             <Header />
-            <main class="flex-grow">
+            <main className="flex-grow">
                 <Routes>
                     <Route path="/" Component={Home} />
                     <Route path="/about" Component={About} />

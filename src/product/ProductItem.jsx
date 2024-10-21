@@ -27,7 +27,7 @@ const ProductItem = ({ product, onDeleteNotify }) => {
         }
     };
 
-    return <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow mb-4">
+    return <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow mb-4">
         <button onClick={onDelete} className="">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -35,12 +35,13 @@ const ProductItem = ({ product, onDeleteNotify }) => {
         </button>
         {err === 403 ? <Error msg="No Permission to delete" /> : null}
         {err === 500 ? <Error /> : null}
-        <img class="rounded w-full" src={NoImg} alt="" />
-        <div class="p-5">
+
+        <img className="rounded w-full" src={product.image ? product.image : NoImg} alt="" />
+        <div className="p-5">
             <Link to={"/product-detail/" + product._id}>
-                <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">{product.brand} {product.model}</h5>
-                <h5 class="text-sm tracking-tight text-gray-900 line-through">${product.price}</h5>
-                <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900">${getDiscountedPrice()}
+                <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">{product.brand} {product.model}</h5>
+                <h5 className="text-sm tracking-tight text-gray-900 line-through">${product.price}</h5>
+                <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900">${getDiscountedPrice()}
                     <span className="ml-1 text-xs font-normal">({product.discount}% off)</span>
                 </h5>
             </Link>

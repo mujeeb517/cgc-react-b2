@@ -49,7 +49,7 @@ class UserList extends React.Component {
     render() {
         return <div className="m-4">
             <h1 className="text-xl font-bold text-gray-600">Users</h1>
-            {this.state.users.map(user => <UserItem user={user} />)}
+            {this.state.users.map(user => <UserItem key={user.login} user={user} />)}
         </div>
     }
 }

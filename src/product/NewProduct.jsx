@@ -10,7 +10,8 @@ function NewProduct() {
         model: '',
         price: '',
         inStock: false,
-        discount: ''
+        discount: '',
+        image: null
     });
 
     const [err, setErr] = useState(false);
@@ -25,7 +26,18 @@ function NewProduct() {
     const onSubmit = async () => {
         try {
             product.inStock = product.inStock === 'on';
-            await myAxios().post('/api/v1/products', product);
+
+            const fd = new FormData();
+
+            fd.append('brand', product.brand);
+            fd.append('model', product.model);
+            fd.append('price', product.price);
+            fd.append('inStock', product.inStock);
+            fd.append('discount', product.discount);
+            fd.append('image', product.image);
+
+
+            await myAxios().post('/api/v1/products', fd);
             setSuccess(true);
             setProduct({
                 brand: '',
@@ -38,6 +50,11 @@ function NewProduct() {
         } catch (err) {
             setErr(true);
         }
+    };
+
+    const onFileChange = (evt) => {
+        const newState = { ...product, image: evt.target.files[0] };
+        setProduct(newState);
     };
 
     return (<div className="m-4">
@@ -78,6 +95,12 @@ function NewProduct() {
             <div className="m-2">
                 <label className="text-gray-500">Instock</label>
                 <input value={product.inStock ? 'on' : 'off'} name="inStock" onChange={onInputChange} className="p-2 m-1 w-4 h-4 font-semibold border border-gray-300 rounded" type="checkbox" />
+            </div>
+
+            {/* Discount */}
+            <div className="m-2">
+                <label className="text-gray-500">Image</label>
+                <input onChange={onFileChange} name="inStock" className="p-2 m-1" type="file" />
             </div>
 
             <div>

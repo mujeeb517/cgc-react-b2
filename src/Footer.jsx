@@ -1,5 +1,5 @@
 function Footer() {
-    return <footer class="text-center bg-gray-200 p-4">
+    return <footer className="text-center bg-gray-200 p-4">
         &copy;2024 products.com
 
         <div>
