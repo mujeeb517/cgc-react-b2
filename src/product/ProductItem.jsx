@@ -8,6 +8,7 @@ import Error from '../util/Error';
 const ProductItem = ({ product, onDeleteNotify }) => {
 
     const [err, setErr] = useState(null);
+    const [imgSrc, setImgSrc] = useState(product.image || NoImg);
 
     const getDiscountedPrice = () => {
         const { price, discount } = product;
@@ -27,6 +28,10 @@ const ProductItem = ({ product, onDeleteNotify }) => {
         }
     };
 
+    const handleImgErr = () => {
+        setImgSrc(NoImg);
+    }
+
     return <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow mb-4">
         <button onClick={onDelete} className="">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -36,7 +41,8 @@ const ProductItem = ({ product, onDeleteNotify }) => {
         {err === 403 ? <Error msg="No Permission to delete" /> : null}
         {err === 500 ? <Error /> : null}
 
-        <img className="rounded w-full" src={product.image ? product.image : NoImg} alt="" />
+        <img className="rounded w-full" onError={handleImgErr} src={imgSrc} alt="" />
+
         <div className="p-5">
             <Link to={"/product-detail/" + product._id}>
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900">{product.brand} {product.model}</h5>
