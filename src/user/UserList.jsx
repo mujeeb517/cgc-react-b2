@@ -35,6 +35,9 @@ class UserList extends React.Component {
 
     constructor() {
         super();
+    }
+
+    componentDidMount = () => {
         axios.get('https://api.github.com/users')
             .then(res => {
                 this.setState({
