@@ -11,6 +11,7 @@ import NotFound from './NotFound';
 import ProductDetail from './product/ProductDetail';
 import NewProduct from './product/NewProduct';
 import Login from './user/Login';
+import ValueContext from './context/ValueContext';
 
 // function App() {
 
