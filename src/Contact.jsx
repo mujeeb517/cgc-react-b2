@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import AutoCounterFunc from "./AutoCounterFunc";
 import ValueContext from './context/ValueContext';
 
@@ -8,21 +8,21 @@ function Child3() {
 }
 
 function Child2() {
-    return <div>
+    return <React.Fragment>
         <h3>Child 2</h3>
         <div className="m-4">
             <Child3 />
         </div>
-    </div>
+    </React.Fragment>
 }
 
 function Child1() {
-    return <div>
+    return <>
         <h3>Child 1</h3>
         <div className="m-4">
             <Child2 />
         </div>
-    </div>
+    </>
 }
 
 function Contact() {
