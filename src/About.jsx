@@ -1,6 +1,3 @@
-import AutoCounter from "./AutoCounter";
-
-
 // Without context api
 
 function Child3({ value }) {
